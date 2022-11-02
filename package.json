@@ -10,6 +10,6 @@
     "wrangler": "^2.1.14"
   },
   "dependencies": {
-    "@jawj/tmp-cfworker-pg": "^0.1.0"
+    "@jawj/tmp-cfworker-pg": "^0.1.2"
   }
 }
