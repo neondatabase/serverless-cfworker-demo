@@ -1,0 +1,8 @@
+name = "neon-cf-pg-test"
+main = "index.ts"
+compatibility_date = "2022-11-01"
+
+[vars]
+# DATABASE_URL
+# Run `wrangler secret put DATABASE_URL` and enter the connection string when prompted.
+# And/or for local dev, create `.dev.vars` containing `DATABASE_URL=postgres://mysecretconnstr`.
