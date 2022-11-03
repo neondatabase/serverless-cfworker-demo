@@ -20,13 +20,13 @@
 
   <body>
     <h1>Your nearest world heritage sites</h1>
-    <ul id="sites"><li>Looking up your nearest sites &hellip;</li></ul>
+    <div id="sites"><p>Looking up your nearest sites &hellip;</p></div>
     <p>
       Heritage site data copyright &copy; 1992 – 2022 <a href="https://whc.unesco.org">UNESCO/World Heritage Centre</a>. All rights reserved.
       <span id="location"></span>.
     </p>
   </body>
-  
+
   <script>
     async function getSites() {
       const response = await fetch('https://neon-cf-pg-test.jawj.workers.dev');
@@ -42,13 +42,13 @@
       document.querySelector('#location').innerHTML = location;      
       
       // sites
-      const sites = data.nearestSites.map(row => `
+      const sites = '<ul>' + data.nearestSites.map(row => `
         <li><a href="https://whc.unesco.org/en/list/${row.id_no}/" 
               style="background-image: url(https://whc.unesco.org/uploads/sites/gallery/google/site_${row.id_no}.jpg)">
           <span class="name">${htmlEsc(row.name_en)}</span>
           <span class="category">${htmlEsc(row.category)}</span>
           <span class="distance">${Math.round(row.distance / 1000)} km</span>
-        </a></li>`).join('');
+        </a></li>`).join('\n') + '</ul>';
 
       document.querySelector('#sites').innerHTML = sites;
     }
