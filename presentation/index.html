@@ -5,6 +5,7 @@
     <style>
       body { margin: 0; padding: 2em 4em; background: #fff; font: 14px/1.25 sans-serif; }
       h1 { padding: 0 0 .33em; margin: 0 0 1em; border-bottom: 1px solid #ccc; }
+      .loading { text-align: center; color: #aaa; }
       ul { margin: 0; padding: 0; }
       li { display: block; float: left; margin: 1ex; padding: 0; list-style-type: none; }
       a { text-decoration: none; color: #55e; }
@@ -20,7 +21,24 @@
 
   <body>
     <h1>Your nearest world heritage sites</h1>
-    <div id="sites"><p>Looking up your nearest sites &hellip;</p></div>
+    <div id="sites">
+      <p class="loading">
+        <!-- By Sam Herbert (@sherb), for everyone. More @ http://goo.gl/7AJzbL -->
+        <svg width="66" height="66" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" stroke="#aaa">
+          <g fill="none" fill-rule="evenodd" stroke-width="2">
+              <circle cx="22" cy="22" r="1">
+                  <animate attributeName="r" begin="0s" dur="1.8s" values="1; 20" calcMode="spline" keyTimes="0; 1" keySplines="0.165, 0.84, 0.44, 1" repeatCount="indefinite"/>
+                  <animate attributeName="stroke-opacity" begin="0s" dur="1.8s" values="1; 0" calcMode="spline" keyTimes="0; 1" keySplines="0.3, 0.61, 0.355, 1" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="22" cy="22" r="1">
+                  <animate attributeName="r" begin="-0.9s" dur="1.8s" values="1; 20" calcMode="spline" keyTimes="0; 1" keySplines="0.165, 0.84, 0.44, 1" repeatCount="indefinite"/>
+                  <animate attributeName="stroke-opacity" begin="-0.9s" dur="1.8s" values="1; 0" calcMode="spline" keyTimes="0; 1" keySplines="0.3, 0.61, 0.355, 1" repeatCount="indefinite"/>
+              </circle>
+          </g>
+        </svg><br>
+        Looking up your nearest sites &hellip;
+      </p>
+    </div>
     <p>
       Heritage site data copyright &copy; 1992 – 2022 <a href="https://whc.unesco.org">UNESCO/World Heritage Centre</a>. All rights reserved.
       <span id="location"></span>.
