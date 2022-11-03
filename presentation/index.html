@@ -17,6 +17,7 @@
     </style>
     <link rel="icon" href="data:,"><!-- suppress favicon.ico fetching -->
   </head>
+
   <body>
     <h1>Your nearest world heritage sites</h1>
     <ul id="sites"><li>Looking up your nearest sites &hellip;</li></ul>
@@ -25,10 +26,11 @@
       <span id="location"></span>.
     </p>
   </body>
+  
   <script>
     async function getSites() {
       const response = await fetch('https://neon-cf-pg-test.jawj.workers.dev');
-      const data = response.json();
+      const data = await response.json();
 
       // escaping
       const escapes = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;' };
@@ -36,17 +38,19 @@
       const htmlEsc = s => s.replace(regexp, match => escapes[match]);
       
       // location
-      document.querySelector('#location').innerHTML = `Geolocation from IP address ${data.ip}: ${htmlEsc(data.city)}, ${htmlEsc(data.country)} (latitude ${data.latitude}, longitude ${data.longitude})`;      
+      const location = `Location derived from IP address: ${htmlEsc(data.city)}, ${htmlEsc(data.country)} (latitude ${data.lat}, longitude ${data.lng})`;
+      document.querySelector('#location').innerHTML = location;      
       
       // sites
-      const html = data.nearestSites.map(row => `
+      const sites = data.nearestSites.map(row => `
         <li><a href="https://whc.unesco.org/en/list/${row.id_no}/" 
               style="background-image: url(https://whc.unesco.org/uploads/sites/gallery/google/site_${row.id_no}.jpg)">
           <span class="name">${htmlEsc(row.name_en)}</span>
           <span class="category">${htmlEsc(row.category)}</span>
           <span class="distance">${Math.round(row.distance / 1000)} km</span>
         </a></li>`).join('');
-      document.querySelector('#location').innerHTML = html;
+
+      document.querySelector('#sites').innerHTML = sites;
     }
     getSites();
   </script>

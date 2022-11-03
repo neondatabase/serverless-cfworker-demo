@@ -5,7 +5,6 @@ interface Env { DATABASE_URL: string }
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const cf = request.cf ?? {} as any;
-    const ip = cf?.ip || '(unknown)';
     const lat = parseFloat(cf.latitude ?? '37.818496');
     const lng = parseFloat(cf.longitude ?? '-122.473831');
     const city: string = cf.city ?? 'Unknown location (assuming San Francisco)';
@@ -28,7 +27,7 @@ export default {
 
     ctx.waitUntil(client.end());
 
-    const responseJson = JSON.stringify({ ip, lat, lng, city, country, nearestSites: rows }, null, 2);
+    const responseJson = JSON.stringify({ lat, lng, city, country, nearestSites: rows }, null, 2);
 
     return new Response(responseJson, { headers: { 
       'Content-Type': 'application/json',
