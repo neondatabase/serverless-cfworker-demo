@@ -60,7 +60,7 @@
       const switchLink = data.viaIp ? 
         `<a href="#" onclick="geolocateSites(); return false;">Try browser geolocation instead.</a>` :
         `<a href="#" onclick="getSites(); return false;">Try IP geolocation instead.</a>`;
-      document.querySelector('#location').innerHTML = location = switchLink;      
+      document.querySelector('#location').innerHTML = location + switchLink;      
       
       // sites
       const sites = '<ul>' + data.nearestSites.map(row => `
