@@ -1,0 +1,53 @@
+<!DOCTYPE html><html>
+  <head>
+    <title>World heritage sites</title>
+    <meta name="viewport" content="initial-scale=.55">
+    <style>
+      body { margin: 0; padding: 2em 4em; background: #fff; font: 14px/1.25 sans-serif; }
+      h1 { padding: 0 0 .33em; margin: 0 0 1em; border-bottom: 1px solid #ccc; }
+      ul { margin: 0; padding: 0; }
+      li { display: block; float: left; margin: 1ex; padding: 0; list-style-type: none; }
+      a { text-decoration: none; color: #55e; }
+      li a { display: block; width: 12em; height: 16em; padding: 0; border-radius: 1em; background-size: cover; background-color: #88e; color: #fff; }
+      li a:hover .name { padding-top: 1.5em; }
+      .name { display: block; font-weight: bold; padding: .9em 1em .1em; background: rgba(0, 0, 0, .4); border-top-left-radius: 1em; border-top-right-radius: 1em; transition: padding-top .2s; }
+      .category { display: block; padding: .1em 1em; background: rgba(0, 0, 0, .4); }
+      .distance { display: block; padding: .1em 1em .75em; background: rgba(0, 0, 0, .4); color: rgba(255, 255, 255, .75) }
+      p { clear: both; padding-top: 1.5em; }
+    </style>
+    <link rel="icon" href="data:,"><!-- suppress favicon.ico fetching -->
+  </head>
+  <body>
+    <h1>Your nearest world heritage sites</h1>
+    <ul id="sites"><li>Looking up your nearest sites &hellip;</li></ul>
+    <p>
+      Heritage site data copyright &copy; 1992 – 2022 <a href="https://whc.unesco.org">UNESCO/World Heritage Centre</a>. All rights reserved.
+      <span id="location"></span>.
+    </p>
+  </body>
+  <script>
+    async function getSites() {
+      const response = await fetch('https://neon-cf-pg-test.jawj.workers.dev');
+      const data = response.json();
+
+      // escaping
+      const escapes = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;' };
+      const regexp = new RegExp('[' + Object.keys(escapes).join('') + ']', 'g');
+      const htmlEsc = s => s.replace(regexp, match => escapes[match]);
+      
+      // location
+      document.querySelector('#location').innerHTML = `Geolocation from IP address ${data.ip}: ${htmlEsc(data.city)}, ${htmlEsc(data.country)} (latitude ${data.latitude}, longitude ${data.longitude})`;      
+      
+      // sites
+      const html = data.nearestSites.map(row => `
+        <li><a href="https://whc.unesco.org/en/list/${row.id_no}/" 
+              style="background-image: url(https://whc.unesco.org/uploads/sites/gallery/google/site_${row.id_no}.jpg)">
+          <span class="name">${htmlEsc(row.name_en)}</span>
+          <span class="category">${htmlEsc(row.category)}</span>
+          <span class="distance">${Math.round(row.distance / 1000)} km</span>
+        </a></li>`).join('');
+      document.querySelector('#location').innerHTML = html;
+    }
+    getSites();
+  </script>
+</html>
