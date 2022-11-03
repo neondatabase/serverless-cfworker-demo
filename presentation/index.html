@@ -56,7 +56,7 @@
       
       // location text
       const location = `Location: ${htmlEsc(data.location)} (latitude ${data.lat}, longitude ${data.lng}). 
-        <br><b>Not nearby?</b>`;
+        <br><b>Not nearby?</b> `;
       const switchLink = data.viaIp ? 
         `<a href="#" onclick="geolocateSites(); return false;">Try browser geolocation instead.</a>` :
         `<a href="#" onclick="getSites(); return false;">Try IP geolocation instead.</a>`;
