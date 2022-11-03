@@ -16,7 +16,6 @@
       .distance { display: block; padding: .1em 1em .75em; background: rgba(0, 0, 0, .4); color: rgba(255, 255, 255, .75) }
       p { clear: both; padding-top: 1.5em; }
     </style>
-    <link rel="icon" href="data:,"><!-- suppress favicon.ico fetching -->
   </head>
 
   <body>
@@ -39,15 +38,15 @@
         Looking up your nearest sites &hellip;
       </p>
     </div>
+    <p id="location"></p>
     <p>
       Heritage site data copyright &copy; 1992 – 2022 <a href="https://whc.unesco.org">UNESCO/World Heritage Centre</a>. All rights reserved.
-      <span id="location"></span>.
     </p>
   </body>
 
   <script>
-    async function getSites() {
-      const response = await fetch('https://neon-cf-pg-test.jawj.workers.dev');
+    async function getSites(path) {
+      const response = await fetch(`https://neon-cf-pg-test.jawj.workers.dev${path ?? '/'}`);
       const data = await response.json();
 
       // escaping
@@ -55,9 +54,13 @@
       const regexp = new RegExp('[' + Object.keys(escapes).join('') + ']', 'g');
       const htmlEsc = s => s.replace(regexp, match => escapes[match]);
       
-      // location
-      const location = `Location derived from IP address: ${htmlEsc(data.city)}, ${htmlEsc(data.country)} (latitude ${data.lat}, longitude ${data.lng})`;
-      document.querySelector('#location').innerHTML = location;      
+      // location text
+      const location = `Location: ${htmlEsc(data.location)} (latitude ${data.lat}, longitude ${data.lng}). 
+        <br><b>Not nearby?</b>`;
+      const switchLink = data.viaIp ? 
+        `<a href="#" onclick="geolocateSites(); return false;">Try browser geolocation instead.</a>` :
+        `<a href="#" onclick="getSites(); return false;">Try IP geolocation instead.</a>`;
+      document.querySelector('#location').innerHTML = location = switchLink;      
       
       // sites
       const sites = '<ul>' + data.nearestSites.map(row => `
@@ -70,6 +73,14 @@
 
       document.querySelector('#sites').innerHTML = sites;
     }
+
+    function geolocateSites() {
+      navigator.geolocation.getCurrentPosition(pos => {
+        const { longitude, latitude } = pos.coords;
+        getSites(`/${longitude}/${latitude}`)
+      });
+    }
+
     getSites();
   </script>
 </html>

@@ -4,15 +4,24 @@ interface Env { DATABASE_URL: string }
 
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+    // try to extract longitude and latitude from path
+    let url; 
+    try { url = new URL(request.url); } 
+    catch { url = { pathname: '/' }; }
+    const [, urlLng, , urlLat] = url.pathname.match(/^\/(-?\d{1,3}(\.\d+)?)\/(-?\d{1,2}(\.\d+)?)$/) ?? [];
+    
+    // fill in missing location data from IP or defaults
     const cf = request.cf ?? {} as any;
-    const lat = parseFloat(cf.latitude ?? '37.818496');
-    const lng = parseFloat(cf.longitude ?? '-122.473831');
-    const city: string = cf.city ?? 'Unknown location (assuming San Francisco)';
-    const country: string = cf.country ?? 'Earth';
+    const lng = parseFloat(urlLng ?? cf.longitude ?? '-122.473831');
+    const lat = parseFloat(urlLat ?? cf.latitude ?? '37.818496');
+    const location = urlLng ? 'via browser geolocation' : 
+      cf.city ? `via IP address, in ${cf.city}, ${cf.country}` : 
+        'unknown, assuming San Francisco';
 
     neonConfig.disableSNI = true;
     // neonConfig.wsProxy = 'localhost:9999';
 
+    // connect and query database
     const client = new Client({ connectionString: env.DATABASE_URL });
     await client.connect();
 
@@ -27,8 +36,8 @@ export default {
 
     ctx.waitUntil(client.end());
 
-    const responseJson = JSON.stringify({ lat, lng, city, country, nearestSites: rows }, null, 2);
-
+    // respond!
+    const responseJson = JSON.stringify({ viaIp: !urlLng, lat, lng, location, nearestSites: rows }, null, 2);
     return new Response(responseJson, { headers: { 
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
