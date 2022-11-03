@@ -5,8 +5,8 @@ interface Env { DATABASE_URL: string }
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const cf = request.cf ?? {} as any;
-    const lat: number = parseFloat(cf.latitude ?? '37.818496');
-    const lng: number = parseFloat(cf.longitude ?? '-122.473831');
+    const lat = parseFloat(cf.latitude ?? '37.818496');
+    const lng = parseFloat(cf.longitude ?? '-122.473831');
     const city: string = cf.city ?? 'Unknown location (assuming San Francisco)';
     const country: string = cf.country ?? 'Earth';
 

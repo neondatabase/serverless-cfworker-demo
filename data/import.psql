@@ -1,0 +1,66 @@
+-- == create schema == --
+
+begin;
+
+drop type if exists category cascade;
+create type category as enum ('Natural', 'Cultural', 'Mixed');
+
+drop type if exists category_short cascade;
+create type category_short as enum ('N', 'C', 'C/N');
+
+drop table if exists whc_sites_2021;
+create table whc_sites_2021 (
+  unique_number integer primary key,
+  id_no integer not null,
+  rev_bis text,
+  name_en text not null,
+  name_fr text not null,
+  short_description_en text not null,
+  short_description_fr text not null,
+  justification_en text,
+  justification_fr text,
+  date_inscribed integer not null,
+  secondary_dates text,
+  danger integer,
+  date_end integer,
+  danger_list text,
+  longitude float not null,
+  latitude float not null,
+  area_hectares float,
+  c1 int not null,
+  c2 int not null,
+  c3 int not null,
+  c4 int not null,
+  c5 int not null,
+  c6 int not null,
+  n7 int not null,
+  n8 int not null,
+  n9 int not null,
+  n10 int not null,
+  criteria_txt text not null,
+  category category not null,
+  category_short category_short not null, 
+  states_name_en text not null,
+  states_name_fr text not null,
+  region_en text not null,
+  region_fr text not null,
+  iso_code text,
+  udnp_code text,
+  transboundary int not null
+);
+
+commit;
+
+
+-- == import data == --
+
+\copy whc_sites_2021 from 'data/whc-sites-2021.csv' csv header
+
+
+-- == create geography column + index == --
+
+create extension postgis;
+alter table whc_sites_2021 add column location geography(point);
+update whc_sites_2021 set location = st_setsrid(st_makepoint(longitude, latitude), 4326)::geography;
+create index loc_idx on whc_sites_2021 using gist (location);
+analyze whc_sites_2021;
