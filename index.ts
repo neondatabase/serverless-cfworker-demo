@@ -15,7 +15,7 @@ export default {
     const lng = parseFloat(urlLng ?? cf.longitude ?? '-122.473831');
     const lat = parseFloat(urlLat ?? cf.latitude ?? '37.818496');
     const location = urlLng ? 'via browser geolocation' : 
-      cf.city ? `via IP address, in ${cf.city}, ${cf.country}` : 
+      cf.city ? `via IP address in ${cf.city}, ${cf.country}` : 
         'unknown, assuming San Francisco';
 
     neonConfig.disableSNI = true;
