@@ -1,6 +1,6 @@
 # Query Neon PostgreSQL from a Cloudflare Worker: example app
 
-This repo provides a quick example of using Neon's driver package `@neon/cfworker-pg` to query PostgreSQL from a Cloudflare Worker.
+This repo provides a quick example of using Neon's driver package `@neondatabase/serverless` to query PostgreSQL from a Cloudflare Worker.
 
 ## The app
 
