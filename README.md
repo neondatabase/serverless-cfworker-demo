@@ -22,6 +22,8 @@ We've simply shimmed the Node libraries it requires, and replaced `net.Socket` a
 
 To run this app locally:
 
+* __Get the data__ — Download [the Excel listing](https://whc.unesco.org/en/list/xls/?2021) from [the UNESCO Syndication page](https://whc.unesco.org/en/syndication/). Open the `.xls` file and save it as a `.csv`.
+
 * __Create the database__ — Create a new project in the Neon dashboard, and connect to it securely using `psql` (substituting your own PostgreSQL connection string, of course):
 
   ```
@@ -31,8 +33,6 @@ To run this app locally:
 
   psql "postgresql://user:password@project-name-1234.cloud.neon.tech:5432/main?sslmode=verify-full&sslrootcert=$HOME/.postgresql/isrgrootx1.pem"
   ```
-
-* __Get the data__ — Download [the Excel listing](https://whc.unesco.org/en/list/xls/?2021) from [the UNESCO Syndication page](https://whc.unesco.org/en/syndication/). Open the `.xls` file and save it as a `.csv`.
 
 * __Load the data__ — Run the SQL commands in `data/import.psql` against your database within `psql`.
 

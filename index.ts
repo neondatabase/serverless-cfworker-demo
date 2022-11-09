@@ -1,4 +1,4 @@
-import { Client, neonConfig } from '@jawj/tmp-cfworker-pg';
+import { Client } from '@jawj/tmp-cfworker-pg';
 
 interface Env { DATABASE_URL: string }
 
@@ -18,11 +18,8 @@ export default {
       cf.city ? `via IP address in ${cf.city}, ${cf.country}` : 
         'unknown, assuming San Francisco';
 
-    neonConfig.disableSNI = true;
-    // neonConfig.wsProxy = 'localhost:9999';
-
     // connect and query database
-    const client = new Client({ connectionString: env.DATABASE_URL });
+    const client = new Client(env.DATABASE_URL);
     await client.connect();
 
     const { rows } = await client.query(`
