@@ -1,4 +1,4 @@
-import { Client } from '@jawj/tmp-cfworker-pg';
+import { Client } from '@neondatabase/serverless';
 
 interface Env { DATABASE_URL: string }
 
