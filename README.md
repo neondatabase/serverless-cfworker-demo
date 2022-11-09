@@ -14,9 +14,9 @@ Please note that the UNESCO data is copyright &copy; 1992 – 2022 <a href="http
 
 ## The driver
 
-Neon's `@neon/cfworker-pg` driver is based on and offers the same API as the [node-postgres](https://node-postgres.com/) package, which is what you get with `npm install pg`. 
+Neon's `@neondatabase/serverless` driver is based on and offers the same API as the [node-postgres](https://node-postgres.com/) package, which is what you get with `npm install pg`. 
 
-We've simply shimmed the Node libraries it requires, and replaced `net.Socket` and `tls.connect` with implementations that encrypt and transfer the data over WebSockets. [See our blog post for more details](https://TODO).
+We've simply shimmed the Node libraries it requires, and replaced `net.Socket` and `tls.connect` with implementations that encrypt and transfer the data over WebSockets.
 
 ## How to run
 
@@ -38,7 +38,7 @@ To run this app locally:
 
 * __Set environment variables__ — Create a file `.dev.vars`, setting the environment variable `DATABASE_URL` to the PostgreSQL connection string you'll find in your Neon dashboard. That should look something like this:
 
-    `DATABASE_URL=postgresql://user:password@project-name-1234.cloud.neon.tech:5432/main?sslmode=verify-full`
+    `DATABASE_URL=postgresql://user:password@project-name-1234.cloud.neon.tech:5432/main`
 
 * __Install and run__ — Install via `npm install`, then run locally with `npx wrangler dev --local`. Edit `presentation/index.html` to fetch from `https://localhost:8787`, and open it in your browser.
 
