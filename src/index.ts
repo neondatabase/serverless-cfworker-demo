@@ -49,11 +49,9 @@ export default {
       nearestSites = rows;
 
       // cache result
-      ctx.waitUntil(caches.default.put(cacheKey, 
-        new Response(JSON.stringify(nearestSites), { 
-          headers: { 'Content-Type': 'application/json' }, 
-          cf: { cacheTtl: 24 * 3600 /* 24 hours */ } 
-        })
+      ctx.waitUntil(caches.default.put(
+        new Request(cacheKey, { cf: { cacheTtl: 24 * 3600 /* 24 hours */ } }), 
+        new Response(JSON.stringify(nearestSites), { headers: { 'Content-Type': 'application/json' } }),
       ));
     }
 
