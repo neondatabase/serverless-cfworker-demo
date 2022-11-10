@@ -1,5 +1,5 @@
 name = "neon-cf-pg-test"
-main = "index.ts"
+main = "src/index.ts"
 compatibility_date = "2022-11-01"
 
 [vars]

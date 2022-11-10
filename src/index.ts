@@ -12,8 +12,8 @@ export default {
     
     // fill in missing location data from IP or defaults
     const cf = request.cf ?? {} as any;
-    const lng = parseFloat(urlLng ?? cf.longitude ?? '-122.473831');
-    const lat = parseFloat(urlLat ?? cf.latitude ?? '37.818496');
+    const longitude = parseFloat(urlLng ?? cf.longitude ?? '-122.473831');
+    const latitude = parseFloat(urlLat ?? cf.latitude ?? '37.818496');
     const location = urlLng ? 'via browser geolocation' : 
       cf.city ? `via IP address in ${cf.city}, ${cf.country}` : 
         'unknown, assuming San Francisco';
@@ -25,16 +25,16 @@ export default {
     const { rows } = await client.query(`
       select 
         id_no, name_en, category,
-        st_setsrid(st_makepoint($1, $2), 4326)::geography <-> location as distance
+        st_makepoint($1, $2) <-> location as distance
       from whc_sites_2021
       order by distance limit 10`,
-      [lng, lat]
-    );
+      [longitude, latitude]
+    );  // no cast needed: PostGIS casts geometry to geography, not the reverse: https://gis.stackexchange.com/a/367374
 
     ctx.waitUntil(client.end());
 
     // respond!
-    const responseJson = JSON.stringify({ viaIp: !urlLng, lat, lng, location, nearestSites: rows }, null, 2);
+    const responseJson = JSON.stringify({ viaIp: !urlLng, latitude, longitude, location, nearestSites: rows }, null, 2);
     return new Response(responseJson, { headers: { 
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',

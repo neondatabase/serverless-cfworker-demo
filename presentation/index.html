@@ -61,7 +61,7 @@
       const htmlEsc = s => s.replace(regexp, match => escapes[match]);
       
       // location text
-      const location = `Location ${htmlEsc(data.location)} (latitude ${data.lat}, longitude ${data.lng}). 
+      const location = `Location ${htmlEsc(data.location)} (latitude ${data.latitude}, longitude ${data.longitude}). 
         <br><b>Wrong location?</b> `;
       const switchLink = data.viaIp ? 
         `<a href="#" onclick="geolocateSites(); return false;">Try browser geolocation instead.</a>` :
