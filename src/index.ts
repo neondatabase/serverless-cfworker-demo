@@ -50,7 +50,10 @@ export default {
 
       // cache result
       ctx.waitUntil(caches.default.put(cacheKey, 
-        new Response(JSON.stringify(nearestSites), { headers: { 'Content-Type': 'application/json' } })
+        new Response(JSON.stringify(nearestSites), { 
+          headers: { 'Content-Type': 'application/json' }, 
+          cf: { cacheTtl: 24 * 3600 /* 24 hours */ } 
+        })
       ));
     }
 
