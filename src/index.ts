@@ -22,7 +22,7 @@ export default {
     let cached;
 
     // check cache
-    const cacheKey = `https://whs.cache.neon.tech/${longitude}/${latitude}`;
+    const cacheKey = `https://whs.cache.neon.tech/${longitude}/${latitude}/data.js`;
     const cachedResponse = await caches.default.match(cacheKey);
 
     if (cachedResponse) {
@@ -49,14 +49,16 @@ export default {
       nearestSites = rows;
 
       // cache result
-      ctx.waitUntil(caches.default.put(
-        new Request(cacheKey, { headers: { 'Cache-Control': 'public, max-age=86400' /* 24 hours */ } }),
-        new Response(JSON.stringify(nearestSites), { headers: { 'Content-Type': 'application/json' } }),
+      ctx.waitUntil(caches.default.put(cacheKey,
+        new Response(JSON.stringify(nearestSites), { headers: { 
+          'Content-Type': 'application/json',
+          'Cache-Control': 'public, max-age=86400' /* 24 hours */,
+        } }),
       ));
     }
 
     // respond!
-    const responseJson = JSON.stringify({ viaIp: !urlLongitude, latitude, longitude, location, nearestSites, cached }, null, 2);
+    const responseJson = JSON.stringify({ viaIp: !urlLongitude, longitude, latitude, location, cached, nearestSites }, null, 2);
     return new Response(responseJson, { headers: { 
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
