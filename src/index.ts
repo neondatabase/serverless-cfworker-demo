@@ -50,7 +50,7 @@ export default {
 
       // cache result
       ctx.waitUntil(caches.default.put(
-        new Request(cacheKey, { cf: { cacheTtl: 24 * 3600 /* 24 hours */ } }), 
+        new Request(cacheKey, { headers: { 'Cache-Control': 'public, max-age=86400' /* 24 hours */ } }),
         new Response(JSON.stringify(nearestSites), { headers: { 'Content-Type': 'application/json' } }),
       ));
     }
