@@ -40,6 +40,6 @@ To run this app locally:
 
     `DATABASE_URL=postgresql://user:password@project-name-1234.cloud.neon.tech:5432/main`
 
-* __Install and run__ — Install via `npm install`, then run locally with `npx wrangler dev --local`. Edit `presentation/index.html` to fetch from `https://localhost:8787`, and open it in your browser.
+* __Install and run__ — Install via `npm install`, then run locally with `npx wrangler dev --local`. Edit `presentation/index.html` to fetch from `http://localhost:8787`, and open it in your browser.
 
 * __Deploy__ — To deploy to Cloudflare Workers, use `npx wrangler secret put DATABASE_URL`, and use the same connection string as in `.dev.vars`. Then type `npx wrangler publish`.
