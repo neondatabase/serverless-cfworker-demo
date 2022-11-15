@@ -1,14 +1,14 @@
-# Query Neon PostgreSQL from a Cloudflare Worker: example app
+# `@neondatabase/serverless` example: query Neon PostgreSQL from a Cloudflare Worker
 
-This repo provides a quick example of using Neon's driver package `@neondatabase/serverless` to query PostgreSQL from a Cloudflare Worker.
+This repo provides a quick example of using Neon's [`@neondatabase/serverless`](https://www.npmjs.com/@neondatabase/serverless) driver package to query PostgreSQL from a Cloudflare Worker.
 
 ## The app
 
 The example is a web app that returns a list of your nearest UNESCO World Heritage Sites.
 
-* You can see the app deployed at https://neon-cf-pg-test.pages.dev (this is static HTML file `presentation/index.html` deployed to Cloudflare Pages).
+* You can see the app deployed at https://places-neon-demo.pages.dev/ (this is static HTML file `presentation/index.html` deployed to Cloudflare Pages).
 
-* You can see the JSON data it fetches at https://neon-cf-pg-test.jawj.workers.dev (this is `index.ts` deployed as a Cloudflare Worker)
+* You can see the JSON data it fetches at https://places.neon-demo.workers.dev/ (this is `index.ts` deployed as a Cloudflare Worker)
 
 Please note that the UNESCO data is copyright &copy; 1992 – 2022 <a href="https://whc.unesco.org">UNESCO/World Heritage Centre</a>. All rights reserved.
 
@@ -17,6 +17,8 @@ Please note that the UNESCO data is copyright &copy; 1992 – 2022 <a href="http
 Neon's `@neondatabase/serverless` driver is based on and offers the same API as the [node-postgres](https://node-postgres.com/) package, which is what you get with `npm install pg`. 
 
 We've simply shimmed the Node libraries it requires, and replaced `net.Socket` and `tls.connect` with implementations that encrypt and transfer the data over WebSockets.
+
+Find out more about the driver from the [`@neondatabase/serverless` README on npmjs.com](https://www.npmjs.com/@neondatabase/serverless) or [GitHub](https://github.com/neondatabase/serverless).
 
 ## How to run
 
@@ -42,4 +44,4 @@ To run this app locally:
 
 * __Install and run__ — Install via `npm install`, then run locally with `npx wrangler dev --local`. Edit `presentation/index.html` to fetch from `http://localhost:8787`, and open it in your browser.
 
-* __Deploy__ — To deploy to Cloudflare Workers, use `npx wrangler secret put DATABASE_URL`, and use the same connection string as in `.dev.vars`. Then type `npx wrangler publish`.
+* __Deploy__ — To deploy to Cloudflare Workers, use `npx wrangler secret put DATABASE_URL`, and use the same connection string as in `.dev.vars`. Then type `npx wrangler publish`. (You may then need to edit `presentation/index.html` to fetch from the deployed endpoint).
