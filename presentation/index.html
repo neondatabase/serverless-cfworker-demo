@@ -52,7 +52,7 @@
 
     async function getSites(path) {
       showLoading('Looking up your nearest sites');
-      const response = await fetch(`https://neon-cf-pg-test.jawj.workers.dev${path ?? '/'}`);
+      const response = await fetch(`https://places.neon-demo.workers.dev${path ?? '/'}`);
       const data = await response.json();
 
       // escaping
