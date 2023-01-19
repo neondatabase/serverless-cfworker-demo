@@ -1,4 +1,4 @@
-import { Client } from '@neondatabase/serverless';
+import { Client } from '@jawj/test-serverless';
 interface Env { DATABASE_URL: string }
 
 export default {
