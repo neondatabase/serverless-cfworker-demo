@@ -2,7 +2,7 @@ import { Client } from '@neondatabase/serverless';
 interface Env { DATABASE_URL: string }
 
 export default {
-  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+  async fetch(request: Request, env: Env, ctx: ExecutionContext) {
     // try to extract longitude and latitude from path
     let url; 
     try { url = new URL(request.url); } 
