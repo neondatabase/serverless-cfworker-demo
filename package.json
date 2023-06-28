@@ -6,8 +6,7 @@
   "author": "George MacKerron",
   "license": "MIT",
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20221111.1",
-    "wrangler": "^3.0.1"
+    "@cloudflare/workers-types": "^4.20221111.1"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.4.9"

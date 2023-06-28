@@ -1,6 +1,6 @@
 # `@neondatabase/serverless` example: query Neon PostgreSQL from a Cloudflare Worker
 
-This repo provides a quick example of using Neon's [`@neondatabase/serverless`](https://www.npmjs.com/@neondatabase/serverless) driver package to query PostgreSQL from a Cloudflare Worker.
+This repo provides an example of using Neon's [`@neondatabase/serverless`](https://www.npmjs.com/@neondatabase/serverless) driver package to query PostgreSQL from a Cloudflare Worker, and to cache the results.
 
 ## The app
 
@@ -28,13 +28,13 @@ To run this app locally:
 
 * __Create the database__ — Create a new project in the Neon dashboard, and connect to it securely using `psql` (substituting your own PostgreSQL connection string, of course):
 
-  ```
-  mkdir -p $HOME/.postgresql
+    ```
+    mkdir -p $HOME/.postgresql
 
-  curl https://letsencrypt.org/certs/isrgrootx1.pem > $HOME/.postgresql/isrgrootx1.pem
+    curl https://letsencrypt.org/certs/isrgrootx1.pem > $HOME/.postgresql/isrgrootx1.pem
 
-  psql "postgresql://user:password@project-name-1234.cloud.neon.tech:5432/main?sslmode=verify-full&sslrootcert=$HOME/.postgresql/isrgrootx1.pem"
-  ```
+    psql "postgresql://user:password@project-name-1234.cloud.neon.tech:5432/main?sslmode=verify-full&sslrootcert=$HOME/.postgresql/isrgrootx1.pem"
+    ```
 
 * __Load the data__ — Run the SQL commands in `data/import.psql` against your database within `psql`.
 
@@ -42,6 +42,27 @@ To run this app locally:
 
     `DATABASE_URL=postgresql://user:password@project-name-1234.cloud.neon.tech:5432/main`
 
-* __Install and run__ — Install via `npm install`, then run locally with `npx wrangler dev --local`. Edit `presentation/index.html` to fetch from `http://localhost:8787`, and open it in your browser.
+* __Install and run__
 
-* __Deploy__ — To deploy to Cloudflare Workers, use `npx wrangler secret put DATABASE_URL`, and use the same connection string as in `.dev.vars`. Then type `npx wrangler publish`. (You may then need to edit `presentation/index.html` to fetch from the deployed endpoint).
+    ```bash
+    npm install
+    npm install -g wrangler@latest
+    
+    npx wrangler dev --local
+    ```
+    
+    Edit `presentation/index.html` to fetch from `http://localhost:8787`, and open that address in your browser.
+
+* __Deploy__
+
+    ```bash
+    npx wrangler secret put DATABASE_URL # same connection string as in `.dev.vars`
+    npx wrangler publish
+    ```
+    
+    (You may then need to edit `presentation/index.html` to fetch from the deployed endpoint).
+
+
+## Feedback and support
+
+Please visit [Neon Community](https://community.neon.tech/) or [Support](https://neon.tech/docs/introduction/support).
